@@ -1,33 +1,37 @@
-package com.study
+import java.io.*
+import java.math.*
+import java.security.*
+import java.text.*
+import java.util.*
+import java.util.concurrent.*
+import java.util.function.*
+import java.util.regex.*
+import java.util.stream.*
+import kotlin.collections.*
+import kotlin.comparisons.*
+import kotlin.io.*
+import kotlin.jvm.*
+import kotlin.jvm.functions.*
+import kotlin.jvm.internal.*
+import kotlin.ranges.*
+import kotlin.sequences.*
+import kotlin.text.*
 
-fun isPrime(n: Int): Boolean {
-    println("starting")
-    if (n <= 1) {
-        return false
-    }
-    if (n <= 3) {
-        return true
-    }
-    if (n % 2 == 0 || n % 3 == 0) {
-        println("if")
-        return false
-    }
-    var i = 5
-    while (i * i <= n) {
-        println(i)
-        if (n % i == 0 || n % (i + 2) == 0) {
-            return false
-        }
-        i += 6
-    }
-    return true
+/*
+ * Complete the 'reverseArray' function below.
+ *
+ * The function is expected to return an INTEGER_ARRAY.
+ * The function accepts INTEGER_ARRAY a as parameter.
+ */
+
+fun reverseArray(a: Array<Int>): Array<Int> {
+    return a.reversed().toTypedArray()
+
 }
 
-fun main() {
-    val number = 17 // Change this to check for other numbers
-    if (isPrime(number)) {
-        println("$number is a prime number.")
-    } else {
-        println("$number is not a prime number.")
-    }
+fun main(args: Array<String>) {
+    val arrCount = readLine()!!.trim().toInt()
+    val arr = readLine()!!.trimEnd().split(" ").map{ it.toInt() }.toTypedArray()
+    val res = reverseArray(arr)
+    println(res.joinToString(" "))
 }
