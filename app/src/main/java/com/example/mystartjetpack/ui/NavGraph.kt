@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 
 @Composable
 fun Nav(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "E") {
+    NavHost(navController = navController, startDestination = "G") {
         composable("A") {
             ScreenA(navController)
         }
@@ -19,6 +19,12 @@ fun Nav(navController: NavHostController) {
         }
         composable("E") {
             EqualParts(navController)
+        }
+        composable("F") {
+           Continue(navController)
+        }
+        composable("G") {
+            Login(navController)
         }
 
     }
