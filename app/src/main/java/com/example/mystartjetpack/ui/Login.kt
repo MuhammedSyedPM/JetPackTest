@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -26,23 +27,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.mystartjetpack.R
+import com.example.mystartjetpack.presentation.CityViewModel
+import com.example.mystartjetpack.repository.CityRepository
 
 
 @Composable
-fun Login(navController: NavHostController) {
+fun Login(navController: NavHostController,  cityViewModel: CityViewModel = hiltViewModel()) {
+
+   // val cityResult by cityViewModel.cityResult
     val usernameState = remember { mutableStateOf(TextFieldValue()) }
     Box()
     {
@@ -76,14 +81,24 @@ fun Login(navController: NavHostController) {
                 Spacer(modifier = Modifier.height(10.dp))
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = {},
+                    onClick = {
+
+                     //   cityViewModel.onButtonClick()
+                              navController.navigate("H")
+
+
+                    },
                     enabled = true,
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
                 ) {
-                    Text(text = "Sign In",modifier= Modifier.padding(10.dp))
+                    Text(text = "Sign In", modifier = Modifier.padding(10.dp))
                 }
+
+              //  cityResult?.let { callApi(it,navController) }
+
                 Spacer(modifier = Modifier.height(10.dp))
-                Text(text = "Forgot Password?",
+                Text(
+                    text = "Forgot Password?",
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
 
@@ -99,19 +114,19 @@ fun Login(navController: NavHostController) {
             ) {
 
 
-                Row(modifier= Modifier.fillMaxWidth(),Arrangement.Center){
-                  RoundedColumn {
-                      Row {
-                          Icon(
-                              imageVector = Icons.Default.AccountCircle,
-                              contentDescription = null,
-                              modifier = Modifier.padding(end = 8.dp)
-                          )
-                          Text("Sign Up")
-                      }
+                Row(modifier = Modifier.fillMaxWidth(), Arrangement.Center) {
+                    RoundedColumn {
+                        Row {
+                            Icon(
+                                imageVector = Icons.Default.AccountCircle,
+                                contentDescription = null,
+                                modifier = Modifier.padding(end = 8.dp)
+                            )
+                            Text("Sign Up")
+                        }
 
 
-                  }
+                    }
                     Spacer(modifier = Modifier.width(10.dp))
                     RoundedColumn {
                         Row {
@@ -128,12 +143,33 @@ fun Login(navController: NavHostController) {
 
 
                 }
-                Text(text = "Dont have an Account?. please SignUp",modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+                Text(
+                    text = "Dont have an Account?. please SignUp",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
             }
 
 
         }
 
+
+      
+    }
+
+
+
+}
+
+@Composable
+fun callApi(cityResult: CityResult, navController: NavHostController) {
+    when(cityResult){
+        CityResult.ButtonClick -> Text("Button Click")
+        is CityResult.Error -> Text("Error")
+        CityResult.Loading -> CircularProgressIndicator()
+        is CityResult.Success -> {
+            navController.navigate("H")
+        }
     }
 }
 
@@ -152,8 +188,6 @@ fun RoundedColumn(modifier: Modifier = Modifier, content: @Composable () -> Unit
 }
 
 
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NormalTextField(textState: MutableState<TextFieldValue>, label: String) {
@@ -168,7 +202,10 @@ fun NormalTextField(textState: MutableState<TextFieldValue>, label: String) {
 @Preview(showBackground = true)
 @Composable
 fun LoginPreview() {
-    var context = LocalContext.current
-    var navController = NavHostController(context)
-    Login(navController)
+    val context = LocalContext.current
+    val navController = rememberNavController()
+    var repository = CityRepository(api = null)
+    val testViewModel = CityViewModel(repository) // Provide a mock ViewModel
+    Login(navController, testViewModel)
 }
+
