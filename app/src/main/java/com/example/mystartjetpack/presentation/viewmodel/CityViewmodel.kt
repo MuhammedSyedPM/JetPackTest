@@ -1,5 +1,4 @@
-package com.example.mystartjetpack.presentation
-
+package com.example.mystartjetpack.presentation.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -12,10 +11,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class CityListViewModel @Inject constructor(private val repository: CityRepository) : ViewModel() {
 
-    val cityList = mutableStateOf(CityStateHolder())
+@HiltViewModel
+class CityViewModel @Inject constructor(private val repository: CityRepository) : ViewModel() {
+
+
+     private val cityList = mutableStateOf(CityStateHolder())
 
 
     init {
@@ -32,6 +33,7 @@ class CityListViewModel @Inject constructor(private val repository: CityReposito
             is Resource.Error -> {
                 cityList.value = CityStateHolder(error = result.message.toString())
             }
+
             else -> {
 
             }
@@ -41,3 +43,4 @@ class CityListViewModel @Inject constructor(private val repository: CityReposito
         getCityDetails()
     }
 }
+

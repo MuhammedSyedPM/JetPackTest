@@ -1,8 +1,12 @@
 package com.example.mystartjetpack.di
+import android.content.Context
+import androidx.room.Room
 import com.example.mystartjetpack.api.MsApi
+import com.example.mystartjetpack.db.DataDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -35,4 +39,23 @@ object AppModule {
             // .addInterceptor(interceptor)
             // .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
+
+
+
+    @Singleton
+    @Provides
+    fun provideYourDatabase(
+        @ApplicationContext app: Context
+    ) = Room.databaseBuilder(
+        app,
+        DataDatabase::class.java,
+        "Database"
+    )
+        .build()
+    //.addMigrations(MIGRATION_3_4, MIGRATION_4_5)
+
+
+    @Singleton
+    @Provides
+    fun provideYourDao(db: DataDatabase) = db.getDataDao()
 }

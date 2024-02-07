@@ -92,6 +92,8 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.44")
     implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")**/
+    //implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+
 
     implementation("com.google.dagger:dagger:2.48")
     kapt("com.google.dagger:dagger-compiler:2.44")
@@ -108,6 +110,8 @@ dependencies {
 
     // Room
     val room_version = "2.6.0"
+    implementation("androidx.room:room-ktx:$room_version")
     implementation("androidx.room:room-runtime:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
+
 }

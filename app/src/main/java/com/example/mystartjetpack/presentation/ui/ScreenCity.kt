@@ -1,6 +1,5 @@
-package com.example.mystartjetpack.ui
+package com.example.mystartjetpack.presentation.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +11,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,11 +25,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mystartjetpack.data.Data
-import com.example.mystartjetpack.presentation.CityListViewModel
+import com.example.mystartjetpack.presentation.viewmodel.CityListViewModel
 import com.example.mystartjetpack.repository.CityRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.example.mystartjetpack.showToast
 
 
 @Composable
@@ -33,7 +35,13 @@ fun ScreenCity(
     navController: NavHostController,
     cityViewModel: CityListViewModel = hiltViewModel()
 ) {
+
+
     val result = cityViewModel.cityList.value
+
+    LaunchedEffect(true) {
+        cityViewModel.getCityDetails()
+    }
 
     when {
         result.isLoading -> {
@@ -56,31 +64,34 @@ fun ScreenCity(
         }
     }
 
+
 }
 
 @Composable
 fun CityItem(it: Data) {
-    context= LocalContext.current
+    var changedState by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 4.dp)
             .clickable {
-                GlobalScope.launch(Dispatchers.Main) {
-                    Toast.makeText(context, "${it.countryName}", Toast.LENGTH_SHORT).show()
-                }
+                changedState = true
             }
             .fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(5.dp)) {
             Text(text = it.countryName)
+        }
+    }
 
+    LaunchedEffect(changedState) {
+        if (changedState) {
+            changedState=false
+            context.showToast("message")
         }
     }
 }
-
-
-
-
 
 
 @Preview(showBackground = true)
@@ -88,7 +99,7 @@ fun CityItem(it: Data) {
 fun CityPreview() {
     val context = LocalContext.current
     val navController = rememberNavController()
-    var repository = CityRepository(api = null)
+    var repository = CityRepository(api = null, dataDao = null)
     val testViewModel = CityListViewModel(repository) // Provide a mock ViewModel
     ScreenCity(navController, testViewModel)
 }

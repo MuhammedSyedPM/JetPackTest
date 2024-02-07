@@ -50,7 +50,8 @@ fun ScreenProduct(navController: NavHostController) {
                 Column(modifier = Modifier
                     .fillMaxWidth()
                     .weight(3f)) {
-                    Text(text = "Ernakulam" , modifier = Modifier.align(Alignment.End).padding(10.dp))
+                    Text(text = "Ernakulam" , modifier = Modifier.align(Alignment.End)
+                        .padding(top = 10.dp, end = 10.dp))
                     Text(text = "Adv. John Doe",fontSize = 25.sp,color= Color.Blue)
                     Text(text = "Practicing in Kerala High Court ")
                     Text(text = "3.6",fontSize = 20.sp)
