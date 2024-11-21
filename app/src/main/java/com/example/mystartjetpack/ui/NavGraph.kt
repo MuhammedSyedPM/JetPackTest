@@ -7,10 +7,16 @@ import androidx.navigation.compose.composable
 import com.example.mystartjetpack.presentation.ui.CityScreenSample
 import com.example.mystartjetpack.presentation.ui.RegisterScreen
 import com.example.mystartjetpack.presentation.ui.ScreenCity
+import com.example.mystartjetpack.presentation.ui.ScreenDemo
+import com.example.mystartjetpack.ui.tutorial.ScreenD
 
 @Composable
 fun Nav(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "I") {
+    NavHost(navController = navController, startDestination = "H") {
+
+        composable("D") {
+            ScreenD(navController)
+        }
 
         composable("A") {
             ScreenA(navController)
@@ -36,7 +42,8 @@ fun Nav(navController: NavHostController) {
         composable("I"){
            // DisposableEffectExample()
            // CityScreenSample()
-            RegisterScreen(navController = navController)
+           // RegisterScreen(navController = navController)
+            ScreenDemo(navController = navController)
         }
 
     }

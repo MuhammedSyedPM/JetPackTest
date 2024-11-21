@@ -6,4 +6,5 @@ sealed class RegistrationState {
     data class Error(val error: String) : RegistrationState()
 
     object Idle : RegistrationState()
+
 }

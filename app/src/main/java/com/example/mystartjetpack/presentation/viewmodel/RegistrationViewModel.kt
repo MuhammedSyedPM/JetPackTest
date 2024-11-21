@@ -1,5 +1,6 @@
 package com.example.mystartjetpack.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mystartjetpack.data.User
@@ -13,9 +14,28 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class RegistrationViewModel @Inject constructor(private val repository: CityRepository) : ViewModel() {
+class RegistrationViewModel @Inject constructor(private val repository: CityRepository) :
+    ViewModel() {
     private val _registrationState = MutableStateFlow<RegistrationState>(RegistrationState.Idle)
     val registrationState: StateFlow<RegistrationState> = _registrationState
+
+    private val _users = MutableStateFlow<List<User>>(emptyList())
+    val users: StateFlow<List<User>> = _users
+
+    init {
+        getUsers()
+    }
+
+
+    fun getUsers() {
+        Log.d("MSD_viewmodel_one", users.toString())
+        viewModelScope.launch {
+            repository.getUsers()?.collect { users ->
+                Log.d("MSD_viewmodel", users.toString())
+                _users.value = users
+            }
+        }
+    }
 
     fun register(username: String, password: String, role: String) {
         if (validateFields(username, password, role)) {
@@ -35,10 +55,13 @@ class RegistrationViewModel @Inject constructor(private val repository: CityRepo
     private fun performRegistration(username: String, password: String, role: String) {
         _registrationState.value = RegistrationState.Loading(true)
         viewModelScope.launch {
-            var registerData= mutableListOf<User>()
-            registerData.add(User(username,password))
-           repository.insertData(registerData)
+            var registerData = mutableListOf<User>()
+            registerData.add(User(username, password))
+            repository.insertData(registerData)
             _registrationState.value = RegistrationState.Success("Data inserted Successfully")
         }
     }
 }
+
+
+

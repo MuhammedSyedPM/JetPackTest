@@ -32,7 +32,6 @@ class CityListViewModel @Inject constructor(private val repository: CityReposito
                 cityList.value = CityStateHolder(error = result.message.toString())
             }
 
-            else -> {}
         }
     }
     fun onButtonClick() {

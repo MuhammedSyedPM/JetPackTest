@@ -31,9 +31,7 @@ class CityViewModelState @Inject constructor(private val repository: CityReposit
             is Resource.Error -> {
                 _cityListState.value = CityStateHolder(error = result.message.toString())
             }
-            else -> {
-                // Handle other states if necessary
-            }
+
         }
     }
 

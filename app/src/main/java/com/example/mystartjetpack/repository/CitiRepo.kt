@@ -1,13 +1,17 @@
 package com.example.mystartjetpack.repository
+
+import android.util.Log
 import com.example.mystartjetpack.api.MsApi
 import com.example.mystartjetpack.common.Resource
 import com.example.mystartjetpack.data.Data
 import com.example.mystartjetpack.data.User
 import com.example.mystartjetpack.db.DataDao
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class CityRepository @Inject constructor(private val api: MsApi?,
-                                         private val dataDao: DataDao?
+class CityRepository @Inject constructor(
+    private val api: MsApi?,
+    private val dataDao: DataDao?
 ) {
     suspend fun getCityList(): Resource<List<Data>> {
         return try {
@@ -30,6 +34,12 @@ class CityRepository @Inject constructor(private val api: MsApi?,
     }
 
     suspend fun insertData(registerData: MutableList<User>) {
-       dataDao?.insertUserData(registerData)
+        dataDao?.insertUserData(registerData)
     }
+
+    fun getUsers(): Flow<List<User>>? {
+        Log.d("MSD_oops",dataDao?.getUsers().toString())
+       return dataDao?.getUsers()
+    }
+
 }

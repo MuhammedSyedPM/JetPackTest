@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.Packaging
 import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 plugins {
@@ -11,7 +12,7 @@ android {
     namespace = "com.example.mystartjetpack"
     compileSdk = 34
 
-    packagingOptions {
+    fun Packaging.() {
         resources.excludes.add("mozilla/public-suffix-list.txt")
     }
 
@@ -102,6 +103,9 @@ dependencies {
     implementation("androidx.hilt:hilt-work:1.1.0")
     kapt("androidx.hilt:hilt-compiler:1.1.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
 
 
     // Retrofit

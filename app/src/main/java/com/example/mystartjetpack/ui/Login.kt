@@ -118,3 +118,14 @@ fun LoginPreview() {
     Login(navController, testViewModel)
 }
 
+
+/**
+OutlinedTextField(
+value = "",
+onValueChange = {},
+label = { Text("User ID") },
+modifier = Modifier
+.fillMaxWidth()
+.background(Color.White, shape = RoundedCornerShape(8.dp)), // Background color with shape
+shape = RoundedCornerShape(8.dp) // Border shape (optional)
+)**/
