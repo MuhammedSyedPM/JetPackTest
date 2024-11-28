@@ -21,6 +21,7 @@ class CityListViewModel @Inject constructor(private val repository: CityReposito
         getCityDetails()**/
     }
 
+
      fun getCityDetails() = viewModelScope.launch(Dispatchers.IO) {
         cityList.value = CityStateHolder(isLoading = true)
         when (val result = repository.getCityList()) {
